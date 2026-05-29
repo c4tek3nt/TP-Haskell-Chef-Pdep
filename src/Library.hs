@@ -2,7 +2,7 @@ module Library where
 import PdePreludat
 
 --Parte A
-data Participante = unParticipante {
+data Participante = UnParticipante {
     nombre :: String,
     trucos :: [ListaTrucos],
     especialidad :: Plato
@@ -10,13 +10,13 @@ data Participante = unParticipante {
 
 type ListaTrucos = Plato -> Plato
 
-data Plato = unPlato {
+data Plato = UnPlato {
     dificultad :: Number,
     componentes :: [ListaComponentes]
 }deriving (Show, Eq)
 
-type ListaComponentes = (Ingredientes, PesoEnGramos)
-type Ingredientes = String
+type ListaComponentes = (Ingrediente, PesoEnGramos)
+type Ingrediente = String
 type PesoEnGramos = Number
 
 endulzar :: Number -> Plato -> Plato
@@ -41,6 +41,9 @@ simplificar :: Plato -> Plato
 simplificar plato
     | esComplejo plato = plato {dificultad = 5, componentes = filter (not . menosDe10Gramos) (componentes plato)}
     | otherwise = plato
+
+menosDe10Gramos :: ListaComponentes -> Bool
+menosDe10Gramos (_, gramos) = gramos < 10
 
 esVegano :: Plato -> Bool
 esVegano plato = not (tieneIngrediente "carne" plato || tieneIngrediente "huevo" plato || tieneIngrediente "leche" plato)
