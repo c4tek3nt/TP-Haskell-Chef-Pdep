@@ -1,7 +1,3 @@
-# ejercicio-alumno
+# TP CHEF HASKELL
 
-## Integrantes
-
-- integrante1 (usuario github)
-- integrante2 (usuario github)
-...
+## Caterina Kent

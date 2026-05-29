@@ -59,3 +59,42 @@ noAptoHipertension plato = gramosIngrediente "sal" plato > 2
 
 gramosIngrediente :: Ingrediente -> Plato -> Number
 gramosIngrediente ingrediente plato = sum (map snd (filter ((== ingrediente) . fst) (componentes plato)))
+
+--Parte B
+platoPepe :: Plato
+platoPepe = UnPlato {
+    dificultad = 8,
+    componentes = [("carne", 100), ("harina", 50), ("sal", 1), ("tomate", 20), ("queso", 30), ("pimienta", 5)]
+}
+
+pepeRonccino :: Participante
+pepeRonccino = UnParticipante {
+    nombre = "Pepe Ronccino",
+    trucos = [darSabor 2 5, simplificar, duplicarPorcion],
+    especialidad = platoPepe
+}
+
+--Parte C
+cocinar :: Participante -> Plato
+cocinar participante = aplicarTrucos (trucos participante) (especialidad participante)
+
+aplicarTrucos :: [Truco] -> Plato -> Plato
+aplicarTrucos listaTrucos plato = foldl aplicarTruco plato listaTrucos
+
+aplicarTruco :: Plato -> Truco -> Plato
+aplicarTruco plato truco = truco plato
+
+pesoTotal :: Plato -> Number
+pesoTotal plato = sum (map snd (componentes plato))
+
+esMejorQue :: Plato -> Plato -> Bool
+esMejorQue unPlato otroPlato = dificultad unPlato > dificultad otroPlato && pesoTotal unPlato < pesoTotal otroPlato
+
+participanteEstrella :: [Participante] -> Participante
+participanteEstrella participantes =
+    foldl1 mejorParticipante participantes
+
+mejorParticipante :: Participante -> Participante -> Participante
+mejorParticipante unParticipante otroParticipante
+    | cocinar unParticipante `esMejorQue` cocinar otroParticipante = unParticipante
+    | otherwise = otroParticipante
